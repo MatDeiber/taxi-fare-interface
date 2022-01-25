@@ -1,7 +1,7 @@
 const algoliaPlacesApiAppId = 'plU4N8HG6QWK';
 const algoliaPlacesApiKey = '1131438afb49f60a48ed468c5af189b8';
 const mapboxApiToken = 'pk.eyJ1Ijoia3Jva3JvYiIsImEiOiJja2YzcmcyNDkwNXVpMnRtZGwxb2MzNWtvIn0.69leM_6Roh26Ju7Lqb2pwQ';
-const taxiFareApiUrl = 'http://localhost:8000/predict';
+const taxiFareApiUrl = 'https://taxifare.lewagon.ai/predict';
 
 const displayMap = (start, stop) => {
   mapboxgl.accessToken = mapboxApiToken;
@@ -195,7 +195,8 @@ const predict = () => {
         query.push(`${param}=${data[param]}`)
       })
       const querystring = query.join('&')
-      const url = `${taxiFareApiUrl}?${querystring}`
+      //const url = `${taxiFareApiUrl}?${querystring}`
+      const url = `https://taxifare.lewagon.ai/predict?pickup_datetime=2012-10-06%2012:10:20&pickup_longitude=40.7614327&pickup_latitude=-73.9798156&dropoff_longitude=40.6513111&dropoff_latitude=-73.8803331&passenger_count=2`
       fetch(url, {
         method: 'GET',
         headers: {
@@ -206,7 +207,7 @@ const predict = () => {
       .then(data => {
         document.getElementById('fare').classList.remove('d-none');
         const fareResult = document.getElementById('predicted-fare');
-        const fare = Math.round(data['fare'] * 100) / 100
+        const fare = Math.round(data['prediction'] * 100) / 100
         fareResult.innerText = `$${fare}`;
       })
       .catch((error) => {
